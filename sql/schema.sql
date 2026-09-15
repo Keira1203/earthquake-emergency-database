@@ -1,0 +1,5 @@
+-- Create tables
+-- Primary keys
+-- Foreign keys
+-- Constraints
+-- Data types
