@@ -1,7 +1,38 @@
+
 -- SELECT
+CREATE DATABASE disaster_management;
+USE disaster_management;
+SELECT DATABASE();
+
+SELECT* FROM Person WHERE person_id = 67;
 -- INSERT
+INSERT INTO Person(
+    person_id,
+    name,
+    phone_number,
+    emergency_contact,
+    address,
+    has_children,
+    marital_status,
+    distance_from_incident
+)
+VALUES (
+        67,
+        'Ed Sheeran',
+        '+32222222',
+        'mom',
+        'phs',
+        TRUE,
+        'Single',
+        10
+);
 -- UPDATE
+    UPDATE Person
+    SET distance_from_incident = 20
+    WHERE person_id = 67;
 -- DELETE
+    DELETE FROM Person WHERE name = 'Ed Sheeran';
+
 
 -- Advanced queries
 -- Query 1: Hospital occupation and available capacity analysis
