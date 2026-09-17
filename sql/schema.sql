@@ -35,16 +35,12 @@ CREATE TABLE Patient_Record (
     record_id INT PRIMARY KEY,
     person_id INT,
     hospital_id INT,
-    allergy_id VARCHAR(100),
-    medication_id VARCHAR(100),
     admission_date DATETIME,
     discharge_date DATETIME,
     medical_condition VARCHAR(100),
 
     FOREIGN KEY (person_id) REFERENCES Person(person_id),
-    FOREIGN KEY (hospital_id) REFERENCES Hospital(hospital_id),
-    FOREIGN KEY (medication_id) REFERENCES Patient_Medication(medication_id),
-    FOREIGN KEY (allergy_id) REFERENCES Patient_Allergy(allergy_id)
+    FOREIGN KEY (hospital_id) REFERENCES Hospital(hospital_id)
 );
 
 
