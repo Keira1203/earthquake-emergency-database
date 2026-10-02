@@ -37,7 +37,7 @@ To test how our database design holds up against real-world data, we integrated 
   - **URL**: [OpenFEMA Dataset Page](https://www.fema.gov/openfema-data-page/registration-intake-and-individuals-household-program-ri-ihp-v2)
   - **File Path**: `./data/RegistrationIntakeIndividualsHouseholdPrograms.csv`
   - **License**: U.S. Government Work / Open Data (Public Domain)
-  - **Description**: Real-world data on disaster assistance registrations, locations (city, county, zip code), and financial support allocations used to validate `Person` and `Supplies` / `Supply_Order` records.
+  - **Description**: Real-world data on disaster assistance registrations, locations (city, county, zip code), and financial support allocations used to populate and validate the FEMA_Registration table and support disaster-area analysis together with hospital data.
 
 * **Dataset 2: CMS Hospital General Information**
   - **Source**: Centers for Medicare & Medicaid Services (CMS) / U.S. Department of Health & Human Services
@@ -47,15 +47,27 @@ To test how our database design holds up against real-world data, we integrated 
   - **Description**: Comprehensive data on registered hospital facilities, locations, phone numbers, and emergency services used to validate the `Hospital` entity.
 
 #### 2. Data Cleaning & Transformation
-During the integration process, several data cleaning steps were conducted and documented:
-- **Missing Data**: Converted empty strings and placeholder values (e.g., `N/A`, `Unknown`) into SQL `NULL` values.
-- **Date Formatting**: Standardized irregular date string formats into standard ISO `YYYY-MM-DD` format.
-- **Duplicates**: Removed duplicate facility and intake records based on unique identifiers (`id` and hospital registration numbers).
-- **Naming Conventions**: Mapped external column names to match our SQL schema attributes (e.g., mapping `Facility Name` to `hospital_name`).
+During integration, the datasets were cleaned and standardized using separate SQL cleaning scripts.
+
+- **Hospital data**: Text values were trimmed, state codes were standardized to uppercase, empty values were converted to `NULL`, emergency-service values were converted to Boolean values, and unavailable hospital ratings were stored as `NULL`.
+- **FEMA data**: State, city, and county names were standardized, and labels such as `Napa (County)` were cleaned to `NAPA`.
+- **Person data**: Text fields were trimmed and missing marital status or emergency-contact values were handled consistently.
+- **Duplicates**: Unique identifiers were checked for duplicates. No duplicate Hospital or FEMA IDs remained after import.
 
 #### 3. Normalization & Schema Verification
-- **3NF Verification**: After populating the database with real-world data, the schema was re-evaluated and confirmed to remain normalized up to **Third Normal Form (3NF)**.
-- **Query Re-execution**: All analytical example queries from Week 3 (such as calculating available hospital capacity and identifying stock shortages) were re-run against the real-world data and yielded accurate, meaningful results without constraint violations.
+
+After integrating the real-world Hospital and FEMA datasets, the database was checked again for normalization up to 3NF.
+
+- **1NF**: All values remain atomic, with no multi-valued attributes.
+- **2NF**: All tables use single-column primary keys, so no partial dependencies occur.
+- **3NF**: No transitive dependencies were found that required further restructuring.
+
+The `Hospital` table uses `hospital_id` as its primary key, and the `FEMA_Registration` table uses `fema_id`. Their remaining attributes describe the corresponding hospital or FEMA registration record.
+
+Therefore, the database remains normalized up to **3NF** after real-world data integration.
+
+- **Query Re-execution**: All four example queries were also re-run and returned meaningful results after cleaning and integration.
+
 
 ---
 
@@ -67,9 +79,13 @@ During the integration process, several data cleaning steps were conducted and d
 ├── data/                                               # Real-world datasets (Week 5)
 │   ├── Hospital_General_Information.csv               # CMS hospital dataset
 │   └── RegistrationIntakeIndividualsHouseholdPrograms.csv # OpenFEMA assistance dataset
-├── sql/                                                # Database SQL scripts (Week 3)
+├── sql/                                                # Database SQL scripts
 │   ├── schema.sql                                      # Schema definitions and constraints
-│   ├── data.sql                                        # Initial data insertion
+│   ├── import.sql                                      # Imports real-world CSV datasets
+│   ├── clean_hospital.sql                              # Cleans and validates hospital data
+│   ├── clean_fema.sql                                  # Cleans and standardizes FEMA data
+│   ├── clean_person.sql                                # Cleans mock person data
+│   ├── data.sql                                        # Initial/mock data insertion
 │   └── queries.sql                                     # Analytical and operational queries
 ├── images/                                             # Project diagrams (Week 2)
 │   └── erd.png                                         # Entity Relationship Diagram
@@ -78,7 +94,7 @@ During the integration process, several data cleaning steps were conducted and d
 │   └── Data_modeling.pdf                               # Week 2 deliverable
 └── videos/                                             # Stakeholder video (Week 4)
     └── presentation_video.mp4                          # Video demonstration
-
+```
 ## Team
 
 - Alisa Januška
@@ -156,8 +172,7 @@ SOURCE /Users/yourname/Desktop/disaster_management/schema.sql;
 ```
 ### 5. Import the base datasets
 
-Run the `import.sql` file to load the CSV data into the `Hospital` and `Person` tables:
-
+Run import.sql to load the CMS hospital dataset into Hospital and the FEMA dataset into FEMA_Registration.
 ```
 SOURCE sql/import.sql;
 ```
@@ -166,11 +181,22 @@ SOURCE sql/import.sql;
 You can verify that the data was imported successfully by running:
 
 ```
-SELECT COUNT(*) FROM Hospital; -- Expected: ~5,411 rows
-SELECT COUNT(*) FROM Person;   -- Expected: ~225,352 rows
+SELECT COUNT(*) FROM Hospital; -- Expected: 5,419 rows
+SELECT COUNT(*) FROM FEMA_Registration; -- Expected 225,351 rows
 
 ```
 
+### Run Order
+
+Run the SQL scripts in the following order:
+
+1. `schema.sql`
+2. `import.sql`
+3. `clean_hospital.sql`
+4. `clean_fema.sql`
+5. `data.sql`
+6. `clean_person.sql`
+7. `queries.sql`
 
 ### Important
 

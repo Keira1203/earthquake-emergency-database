@@ -17,9 +17,13 @@ CREATE TABLE Person (
 
 
 CREATE TABLE Hospital (
-    hospital_id INT PRIMARY KEY,
+    hospital_id VARCHAR(20) PRIMARY KEY,
     name VARCHAR(100),
     location VARCHAR(200),
+    state VARCHAR(10),
+    county VARCHAR(100),
+    emergency_services BOOLEAN,
+    overall_rating INT,
     available_capacity INT
 );
 
@@ -34,7 +38,7 @@ CREATE TABLE Supplies (
 CREATE TABLE Patient_Record (
     record_id INT PRIMARY KEY,
     person_id INT,
-    hospital_id INT,
+    hospital_id VARCHAR(20),
     admission_date DATETIME,
     discharge_date DATETIME,
     medical_condition VARCHAR(100),
@@ -85,4 +89,15 @@ CREATE TABLE Supply_Order (
 
     FOREIGN KEY (person_id) REFERENCES Person(person_id),
     FOREIGN KEY (supply_id) REFERENCES Supplies(supply_id)
+);
+
+CREATE TABLE FEMA_Registration (
+   fema_id VARCHAR(100) PRIMARY KEY,
+   disaster_number INT,
+    state VARCHAR(10),
+    county VARCHAR(100),
+    city VARCHAR(100),
+    zip_code VARCHAR(20),
+    total_valid_registrations INT,
+    ihp_amount DECIMAL(15,2)
 );

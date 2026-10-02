@@ -49,17 +49,48 @@ OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-INSERT IGNORE INTO Hospital (hospital_id, name, location, available_capacity)
-SELECT 
-    CAST(NULLIF(REGEXP_REPLACE(REPLACE(facility_id, '\r', ''), '[^0-9]', ''), '') AS UNSIGNED),
-    facility_name,
-    CONCAT_WS(', ', address, city_town, state, zip_code),
+INSERT IGNORE INTO Hospital (
+    hospital_id,
+    name,
+    location,
+    state,
+    county,
+    emergency_services,
+    overall_rating,
+    available_capacity
+)
+SELECT
+    TRIM(REPLACE(facility_id, '\r', '')),
+    TRIM(facility_name),
+    CONCAT_WS(', ',
+              TRIM(address),
+              TRIM(city_town),
+              TRIM(state),
+              TRIM(zip_code)
+    ),
+    TRIM(state),
+    TRIM(county_parish),
+
+    CASE
+        WHEN UPPER(TRIM(emergency_services)) = 'YES' THEN TRUE
+        WHEN UPPER(TRIM(emergency_services)) = 'NO' THEN FALSE
+        ELSE NULL
+        END,
+
+    CASE
+        WHEN TRIM(overall_rating) = 'Not Available'
+            OR TRIM(overall_rating) = ''
+            THEN NULL
+        ELSE CAST(TRIM(overall_rating) AS UNSIGNED)
+        END,
+
     0
 FROM HospitalTemp
-WHERE NULLIF(REGEXP_REPLACE(REPLACE(facility_id, '\r', ''), '[^0-9]', ''), '') IS NOT NULL;
+WHERE TRIM(REPLACE(facility_id, '\r', '')) <> '';
 
 DROP TEMPORARY TABLE HospitalTemp;
 
+DROP TEMPORARY TABLE IF EXISTS SuppliesTemp;
 CREATE TEMPORARY TABLE SuppliesTemp (
     disaster_number VARCHAR(255),
     state VARCHAR(255),
@@ -89,18 +120,27 @@ OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n'
 IGNORE 1 LINES;
 
-SET @row_num = 0;
 
-INSERT IGNORE INTO Person (person_id, name, phone_number, emergency_contact, address, has_children, marital_status, distance_from_incident)
-SELECT 
-    (@row_num := @row_num + 1) AS person_id,
-    CONCAT('Applicant_', REPLACE(fema_id, '\r', '')),
-    NULL,
-    NULL,
-    CONCAT_WS(', ', city, county, state, zip_code),
-    NULL,
-    NULL,
-    NULL
-FROM SuppliesTemp;
+INSERT IGNORE INTO FEMA_Registration (
+    fema_id,
+    disaster_number,
+    state,
+    county,
+    city,
+    zip_code,
+    total_valid_registrations,
+    ihp_amount
+)
+SELECT
+    TRIM(REPLACE(fema_id, '\r', '')),
+    CAST(disaster_number AS UNSIGNED),
+    TRIM(state),
+    TRIM(county),
+    TRIM(city),
+    TRIM(zip_code),
+    CAST(total_valid_registrations AS UNSIGNED),
+    CAST(ihp_amount AS DECIMAL(15,2))
+FROM SuppliesTemp
+WHERE TRIM(REPLACE(fema_id, '\r', '')) <> '';
 
 DROP TEMPORARY TABLE SuppliesTemp;
