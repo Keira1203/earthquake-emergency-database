@@ -14,7 +14,7 @@ In major earthquake events, emergency logistics and medical dispatch are severel
 
 ### Week 2: Data Modeling (ERD) 
 The conceptual and logical schema for our database design is documented in the `images/` and `docs/` directories:
-- **ERD Diagram**: 
+- **ER Diagram**: 
   ![ERD](./images/erd.png)
 - **Data Modeling Report**: `./docs/Data_modeling.pdf`
 
