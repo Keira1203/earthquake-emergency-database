@@ -154,6 +154,23 @@ On macOS, use the path to the file on your Mac, for example:
 ```sql
 SOURCE /Users/yourname/Desktop/disaster_management/schema.sql;
 ```
+### 5. Import the base datasets
+
+Run the `import.sql` file to load the CSV data into the `Hospital` and `Person` tables:
+
+```
+SOURCE sql/import.sql;
+```
+
+### Verify Data Import  
+You can verify that the data was imported successfully by running:
+
+```
+SELECT COUNT(*) FROM Hospital; -- Expected: ~5,411 rows
+SELECT COUNT(*) FROM Person;   -- Expected: ~225,352 rows
+
+```
+
 
 ### Important
 
@@ -165,4 +182,4 @@ SOURCE /Users/yourname/Desktop/disaster_management/schema.sql;
 ```sql
 USE disaster_management;
 ```
-
+* Make sure you launch MySQL with `--local-infile=1` so `import.sql` can read local CSV files properly
