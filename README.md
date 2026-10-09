@@ -68,6 +68,24 @@ Therefore, the database remains normalized up to **3NF** after real-world data i
 
 - **Query Re-execution**: All four example queries were also re-run and returned meaningful results after cleaning and integration.
 
+## Week 6: Final Analytical Queries & Data Release
+
+### Analytical Queries & Societal Relevance
+All queries can be found in `./sql/added_queries.sql`. Below are the team contributions:
+
+#### Keira Nishigori (@Keira1203)
+1. **Query 1: Top 10 Hospitals by Available Capacity**
+   - **Question Answered:** Which hospitals currently have the highest available bed capacity?
+   - **Societal Relevance:** Allows emergency dispatchers to route injured victims efficiently during an earthquake, preventing hospital overcrowding and saving lives.
+2. **Query 2: Disaster-Affected Population Hotspots**
+   - **Question Answered:** Which geographical areas have the highest number of affected individuals?
+   - **Societal Relevance:** Helps relief organizations like FEMA prioritize the distribution of emergency supplies, water, and rescue teams to high-density affected zones.
+
+### Zenodo Dataset Release
+The full SQL database dump has been published on Zenodo:
+- **Zenodo Repository:** https://zenodo.org/records/23211621
+
+
 
 ---
 
