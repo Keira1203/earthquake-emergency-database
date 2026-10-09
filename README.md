@@ -101,6 +101,17 @@ All queries can be found in `./sql/added_queries.sql`. Below are the team contri
     - **Question Answered:** Which hospitals with emergency services have more available beds than the average hospital, and how are they rated?
     - **Societal Relevance:** Helps responders direct ambulances to the best-prepared hospitals, so patients receive care faster and overloaded facilities are avoided.
 
+#### Iyem Pelzer (@Pelzer-Iyem)
+
+1. **Query 7: Which locations have the highest number of supplies requested and how many supplies?**
+   - **Question Answered:** Where is the highest number of requests for supplies?
+   - **Societal Relevance:** Knowing which areas have the highest demand for supplies allows emergency management authorities to optimize deliveries to those areas by sending bigger shipments at ones.
+
+2. **Query 8: Affected families with children**
+   - **Question Answered:** Which locations have the most affected people with children?
+   - **Societal Relevance:** Gives priority to families with children so emergency management authorities can send resources with special aid to those areas first.
+
+
 ### Zenodo Dataset Release
 The full SQL database dump has been published on Zenodo:
 - **Zenodo Repository:** https://zenodo.org/records/23211621
