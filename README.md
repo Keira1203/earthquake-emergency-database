@@ -81,7 +81,7 @@ All queries can be found in `./sql/added_queries.sql`. Below are the team contri
    - **Question Answered:** Which geographical areas have the highest number of affected individuals?
    - **Societal Relevance:** Helps relief organizations like FEMA prioritize the distribution of emergency supplies, water, and rescue teams to high-density affected zones.
 
-#### Nicole Mihailov
+#### Nicole Mihailov (@nicoletamihailova)
 
 1. **Query 3: Most Requested Supplies**
     - **Question Answered:** Which types of supplies are requested in the highest quantities?
