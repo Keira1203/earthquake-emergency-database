@@ -59,3 +59,47 @@ FROM Hospital
 WHERE emergency_services = TRUE
   AND state IN ('CA', 'AK', 'PR')
 ORDER BY overall_rating DESC;
+
+-- Author: Alisa Januska
+
+-- Query 5: Emergency hospital capacity per state
+-- Question:
+--    How many emergency hospitals and available beds does each state have?
+-- Societal Relevance:
+--    After a major earthquake, authorities need to know which states can absorb
+--    large numbers of injured people and which states will need to transfer
+--    patients elsewhere. This supports regional coordination of patient flows
+--    and helps prevent local hospitals from being overwhelmed.
+
+SELECT
+    state,
+    COUNT(*)                AS emergency_hospitals,
+    SUM(available_capacity) AS total_available_beds
+FROM Hospital
+WHERE emergency_services = TRUE
+GROUP BY state
+HAVING COUNT(*) > 0
+ORDER BY total_available_beds DESC;
+
+
+-- Query 6: Emergency hospitals with above-average free capacity
+-- Question:
+--    Which hospitals with emergency services have more available beds than
+--    the average hospital, and how are they rated?
+-- Societal Relevance:
+--    Sending patients to hospitals that are already near full capacity delays
+--    treatment. This query identifies the best-prepared hospitals (emergency
+--    services + above-average capacity), so responders can direct ambulances
+--    to facilities where patients will receive care fastest.
+
+SELECT
+    hospital_id,
+    name,
+    state,
+    county,
+    available_capacity AS available_beds,
+    overall_rating
+FROM Hospital
+WHERE emergency_services = TRUE
+  AND available_capacity > (SELECT AVG(available_capacity) FROM Hospital)
+ORDER BY available_capacity DESC, overall_rating DESC;

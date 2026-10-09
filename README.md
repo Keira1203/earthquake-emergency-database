@@ -91,6 +91,16 @@ All queries can be found in `./sql/added_queries.sql`. Below are the team contri
     - **Question Answered:** Which hospitals provide emergency services in earthquake affected states?
     - **Societal Relevance:** Helps emergency responders identify hospitals that can receive patients during a disaster.
 
+#### Alisa Januska (@alisajanuska-netizen)
+
+1. **Query 5: Emergency Hospital Capacity per State**
+    - **Question Answered:** How many emergency hospitals and available beds does each state have?
+    - **Societal Relevance:** Helps authorities see which states can absorb large numbers of injured people and which will need to transfer patients elsewhere, supporting regional coordination after an earthquake.
+
+2. **Query 6: Emergency Hospitals with Above-Average Free Capacity**
+    - **Question Answered:** Which hospitals with emergency services have more available beds than the average hospital, and how are they rated?
+    - **Societal Relevance:** Helps responders direct ambulances to the best-prepared hospitals, so patients receive care faster and overloaded facilities are avoided.
+
 ### Zenodo Dataset Release
 The full SQL database dump has been published on Zenodo:
 - **Zenodo Repository:** https://zenodo.org/records/23211621
