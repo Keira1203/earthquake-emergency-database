@@ -103,3 +103,39 @@ FROM Hospital
 WHERE emergency_services = TRUE
   AND available_capacity > (SELECT AVG(available_capacity) FROM Hospital)
 ORDER BY available_capacity DESC, overall_rating DESC;
+
+
+-- Author: Iyem Pelzer
+
+-- Query 7: Which locations have the highest number of supplies requested and how many supplies?
+-- Question:
+--      Where is the highest number of requests for supplies?
+-- Societal Relevance:
+--      Knowing which areas have the highest demand for supplies allows emergency management 
+--      authorities to optimize deliveries to those areas by sending bigger shipments at ones.
+
+SELECT Person.address AS location,
+    COUNT(Supply_Order.order_id) AS total_orders,
+    SUM(Supply_Order.quantity) AS total_quantity_requested
+FROM Person 
+JOIN Supply_Order 
+    ON Person.person_id = Supply_Order.person_id
+WHERE Supply_Order.status = 'Pending'
+GROUP BY Person.address
+ORDER BY total_quantity_requested DESC
+LIMIT 10; 
+
+-- Query 8: Affected families with children
+-- Question:
+--     Which locations have the most affected people with children?
+-- Societal Relevance:
+--     Gives priority to families with children so emergency management authorities 
+--     can send resources with special aid to those areas first.
+
+SELECT address,
+    COUNT(*) AS affected_with_children
+FROM Person
+WHERE has_children = TRUE
+GROUP BY address
+ORDER BY affected_with_children DESC
+LIMIT 10;
