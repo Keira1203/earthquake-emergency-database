@@ -81,6 +81,16 @@ All queries can be found in `./sql/added_queries.sql`. Below are the team contri
    - **Question Answered:** Which geographical areas have the highest number of affected individuals?
    - **Societal Relevance:** Helps relief organizations like FEMA prioritize the distribution of emergency supplies, water, and rescue teams to high-density affected zones.
 
+#### Nicole Mihailov
+
+1. **Query 3: Most Requested Supplies**
+    - **Question Answered:** Which types of supplies are requested in the highest quantities?
+    - **Societal Relevance:** Helps emergency organizations identify the resources in highest demand and prioritize their distribution.
+
+2. **Query 4: Hospitals with Emergency Services in Affected States**
+    - **Question Answered:** Which hospitals provide emergency services in earthquake affected states?
+    - **Societal Relevance:** Helps emergency responders identify hospitals that can receive patients during a disaster.
+
 ### Zenodo Dataset Release
 The full SQL database dump has been published on Zenodo:
 - **Zenodo Repository:** https://zenodo.org/records/23211621

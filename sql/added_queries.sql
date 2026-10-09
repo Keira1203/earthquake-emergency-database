@@ -23,3 +23,39 @@ FROM Person
 GROUP BY address
 ORDER BY affected_people DESC
 LIMIT 10;
+
+
+-- Author: Nicoleta Mihailov
+
+-- Query 3: Most requested supplies
+-- Question:
+--    Which types of supplies are requested in the highest quantities?
+
+-- Societal Relevance:
+--    This helps emergency organizations understand which resources are needed most
+--   and prioritize their supply distribution.
+
+SELECT
+    s.supply_name,
+    SUM(so.quantity) AS total_requested
+FROM Supplies s
+         JOIN Supply_Order so ON s.supply_id = so.supply_id
+GROUP BY s.supply_id, s.supply_name
+ORDER BY total_requested DESC;
+
+
+-- Query 4: Hospitals with emergency services in affected states
+-- Question:
+--    Which hospitals provide emergency services in states affected by earthquakes?
+-- Societal Relevance:
+--    This helps responders identify hospitals that can receive patients during an emergency.
+
+SELECT
+    name,
+    state,
+    county,
+    overall_rating
+FROM Hospital
+WHERE emergency_services = TRUE
+  AND state IN ('CA', 'AK', 'PR')
+ORDER BY overall_rating DESC;
